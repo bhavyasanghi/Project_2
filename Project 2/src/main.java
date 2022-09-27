@@ -7,6 +7,7 @@ public class main  {
       
     String url = "jdbc:mysql://localhost:3306/employees";
     Connection con;
+	System.out.println("Enter SQL Query: "); // Do not press enter for new line. Pressing enter will submit the query.
     Scanner scan = new Scanner(System.in);
     
     String query = scan.nextLine();
