@@ -6,7 +6,9 @@ public class main  {
   public static void main(String args[]) {
 	Scanner sc = new Scanner(System.in);
 	int input = 0;
-	System.out.println("Which Query do you want to test?");
+	while(input !=10){
+		System.out.println("Which Query do you want to test? (1-6)");
+		System.out.println("Enter 10 to exit");
 	input = sc.nextInt();
 	switch(input)
 	{
@@ -64,12 +66,24 @@ public class main  {
 			query5(query);
 			break;
 		case 6:
-
+			System.out.println("Query 6:");
+			System.out.println("Give Employee 1 id: ");
+			e1 = sc.next();
+			System.out.println("Give Employee 2 id: ");
+			e2 = sc.next();
+			String command = "Select t1.dept_no AS 'D1', t1.emp_no as 'E3', t2.dept_no as 'D2' from (Select emp_no, dept_no from dept_emp where dept_no in (Select dept_no from dept_emp where emp_no = E1)) t1 join (Select emp_no, dept_no from dept_emp where dept_no in (Select dept_no from dept_emp where emp_no = E2)) t2 on t1.emp_no = t2.emp_no where t1.dept_no != t2.dept_no Limit 100;";
+			command = command.replace("E1",e1);
+			command = command.replace("E2",e2);
+			query6(command);
 			break;
-	}
+		case 10:
+			input = 10;
+		}
+	}	
+	
 }
 
-
+//Executing Query 1-4
 public static void runSQL(String query) {
 	String url = "jdbc:mysql://localhost:3306/employees";
     Connection con;
@@ -117,7 +131,7 @@ public static void runSQL(String query) {
 	      System.err.println(ex.getMessage());
 	    }  
 	  }
-//test
+//Executing Query 5
 	  public static void query5(String query) {
 		String url = "jdbc:mysql://localhost:3306/employees";
 		Connection con;
@@ -173,6 +187,79 @@ public static void runSQL(String query) {
 			  System.err.println(ex.getMessage());
 			}  
 		  }
+
+// Executing Query 6
+public static void query6(String query) {
+	String url = "jdbc:mysql://localhost:3306/employees";
+	Connection con;
+	Statement stmt;
+	try {
+		  Class.forName("com.mysql.cj.jdbc.Driver");
+	  
+		} catch(java.lang.ClassNotFoundException e) {
+		  System.err.print("ClassNotFoundException: "); 
+		  System.err.println(e.getMessage());
+		}
+
+		try {
+		  con = DriverManager.getConnection(url, 
+					   "root", "Sanghi@009*"); // Enter your server credentials
+	  
+		  stmt = con.createStatement();              
+	  
+		  ResultSet rs = stmt.executeQuery(query);
+		  ResultSetMetaData rsmd = rs.getMetaData();
+	  
+	  
+		  int numberOfColumns = rsmd.getColumnCount()+2;
+		  for (int i = 1; i <= numberOfColumns; i++) {
+			if (i > 1) System.out.print("  |  ");
+			if(i ==1 )System.out.print("E1");
+			if(i==5) System.out.print("E2");
+			if(i==2){
+				String columnName = rsmd.getColumnName(1);
+				System.out.print(columnName);
+			}
+			if(i==3){
+				String columnName = rsmd.getColumnName(2);
+				System.out.print(columnName);
+			}
+			if(i==4){
+				String columnName = rsmd.getColumnName(3);
+				System.out.print(columnName);
+			}
+
+			
+		  }
+		  System.out.println("");
+	  
+		  while (rs.next()) {
+			for (int i = 1; i <= numberOfColumns; i++) {
+				if(i ==1 )System.out.print(e1 + "  |  ");
+				if(i==5) System.out.print(e2);
+			  	if(i==2){
+			  		String columnValue = rs.getString(1);
+			  		System.out.print(columnValue + "  | ");
+			  	}
+			  	if(i==2){
+					String columnValue = rs.getString(2);
+					System.out.print(columnValue + "  |  ");
+				}
+				if(i==2){
+					String columnValue = rs.getString(3);
+					System.out.print(columnValue + "  |  ");
+				}
+			}
+			System.out.println("");  
+		  }
+		  System.out.println();
+		  stmt.close();
+		  con.close();
+		} catch(SQLException ex) {
+		  System.err.print("SQLException: ");
+		  System.err.println(ex.getMessage());
+		}  
+	  }
 }
 
 	
