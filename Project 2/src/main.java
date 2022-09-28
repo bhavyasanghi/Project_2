@@ -1,7 +1,8 @@
 import java.sql.*;
-import java.util.*;     
+import java.util.*;
 public class main  {
-
+	public static String e1;
+	public static String e2;
   public static void main(String args[]) {
 	Scanner sc = new Scanner(System.in);
 	int input = 0;
@@ -49,32 +50,23 @@ public class main  {
 				break;
 		case 5:
 			System.out.println("Query 5");
-			String e1;
-			String e2;
+
 			System.out.println("Give Employee 1 id: ");
 			e1 = sc.next();
 			System.out.println("Give Employee 2 id: ");
 			e2 = sc.next();
+			//e1 = "10009";
+			//e2 = "11545";
 			String query = "Select dept_no From employees inner join dept_emp on employees.emp_no = dept_emp.emp_no where employees.emp_no = E1 and dept_emp.dept_no in (Select dept_no from dept_emp inner join employees on employees.emp_no = dept_emp.emp_no where employees.emp_no = E2) limit 100;";
 
 			query = query.replace("E1",e1);
 			query = query.replace("E2",e2);
-			runSQL(query);
+			query5(query);
 			break;
 		case 6:
 
 			break;
 	}
-
-    
-    
-    
-    
-    
-    
-    
-  
-  
 }
 
 
@@ -125,6 +117,62 @@ public static void runSQL(String query) {
 	      System.err.println(ex.getMessage());
 	    }  
 	  }
+//test
+	  public static void query5(String query) {
+		String url = "jdbc:mysql://localhost:3306/employees";
+		Connection con;
+		Statement stmt;
+		try {
+			  Class.forName("com.mysql.cj.jdbc.Driver");
+		  
+			} catch(java.lang.ClassNotFoundException e) {
+			  System.err.print("ClassNotFoundException: "); 
+			  System.err.println(e.getMessage());
+			}
+	
+			try {
+			  con = DriverManager.getConnection(url, 
+						   "root", "Sanghi@009*"); // Enter your server credentials
+		  
+			  stmt = con.createStatement();              
+		  
+			  ResultSet rs = stmt.executeQuery(query);
+			  ResultSetMetaData rsmd = rs.getMetaData();
+		  
+		  
+			  int numberOfColumns = rsmd.getColumnCount()+2;
+			  for (int i = 1; i <= numberOfColumns; i++) {
+				if (i > 1) System.out.print("  |  ");
+				if(i ==1 )System.out.print("emp_no");
+				if(i==3) System.out.print("emp_no");
+				if(i==2){
+				String columnName = rsmd.getColumnName(1);
+				System.out.print(columnName);
+				}
+				
+			  }
+			  System.out.println("");
+		  
+			  while (rs.next()) {
+				for (int i = 1; i <= numberOfColumns; i++) {
+				  if (i > 1) System.out.print("  |  ");
+				  if(i ==1 )System.out.print(e1);
+				  if(i==3) System.out.print(e2);
+				  if(i==2){
+				  String columnValue = rs.getString(1);
+				  System.out.print(columnValue);
+				  }
+				}
+				System.out.println("");  
+			  }
+			  System.out.println();
+			  stmt.close();
+			  con.close();
+			} catch(SQLException ex) {
+			  System.err.print("SQLException: ");
+			  System.err.println(ex.getMessage());
+			}  
+		  }
 }
 
 	
