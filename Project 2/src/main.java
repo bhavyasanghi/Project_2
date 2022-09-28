@@ -61,6 +61,9 @@ public class main  {
 			query = query.replace("E2",e2);
 			runSQL(query);
 			break;
+		case 6:
+
+			break;
 	}
 
     
