@@ -18,20 +18,20 @@ public class main  {
     		+ "	  inner join salaries on salaries.emp_no = employees.emp_no\r\n"
     		+ "	  join departments on  departments.dept_no = dept_emp.dept_no\r\n"
     		+ "	  group by dept_name\r\n"
-    		+ "	  order by ratio desc; ");
+    		+ "	  order by ratio desc Limit 1; ");
 			break;
 		case 2:
 			System.out.println("Query 2");
 			runSQL("Select employees.first_name,employees.last_name, datediff(dept_manager.to_date,dept_manager.from_date) as 'Duration'\r\n"
 				+ "From dept_manager join employees\r\n"
 				+ "where dept_manager.emp_no = employees.emp_no\r\n"
-				+ "Order by Duration Desc;\r\n"
+				+ "Order by Duration Desc Limit 1;\r\n"
 				+ "");
 			break;
 		case 3:
 			System.out.println("Query 3");
-			runSQL("SELECT DISTINCT departments.dept_name, count(employees.emp_no), AVG(salaries.salary),\r\n"
-				+ "ROUND(YEAR(employees.birth_date), -1) AS birth_date \r\n"
+			runSQL("SELECT DISTINCT departments.dept_name, count(employees.emp_no) AS Count, AVG(salaries.salary) AS Average_Salary,\r\n"
+				+ "ROUND(YEAR(employees.birth_date), -1) AS Decade \r\n"
 				+ "FROM employees\r\n"
 				+ "JOIN salaries ON employees.emp_no = salaries.emp_no\r\n"
 				+ "JOIN dept_emp ON dept_emp.emp_no = employees.emp_no \r\n"
@@ -95,7 +95,7 @@ public static void runSQL(String query) {
 	      int numberOfColumns = rsmd.getColumnCount();
 	  
 	      for (int i = 1; i <= numberOfColumns; i++) {
-	        if (i > 1) System.out.print("|  ");
+	        if (i > 1) System.out.print("  |  ");
 	        String columnName = rsmd.getColumnName(i);
 	        System.out.print(columnName);
 	      }
@@ -103,7 +103,7 @@ public static void runSQL(String query) {
 	  
 	      while (rs.next()) {
 	        for (int i = 1; i <= numberOfColumns; i++) {
-	          if (i > 1) System.out.print("|  ");
+	          if (i > 1) System.out.print("  |  ");
 	          String columnValue = rs.getString(i);
 	          System.out.print(columnValue);
 	        }
