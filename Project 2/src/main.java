@@ -103,7 +103,7 @@ public static void runSQL(String query) {
 	      int numberOfColumns = rsmd.getColumnCount();
 	  
 	      for (int i = 1; i <= numberOfColumns; i++) {
-	        if (i > 1) System.out.print(",  ");
+	        if (i > 1) System.out.print("|  ");
 	        String columnName = rsmd.getColumnName(i);
 	        System.out.print(columnName);
 	      }
@@ -111,7 +111,7 @@ public static void runSQL(String query) {
 	  
 	      while (rs.next()) {
 	        for (int i = 1; i <= numberOfColumns; i++) {
-	          if (i > 1) System.out.print(",  ");
+	          if (i > 1) System.out.print("|  ");
 	          String columnValue = rs.getString(i);
 	          System.out.print(columnValue);
 	        }
