@@ -1,4 +1,4 @@
-import java.sql.*;		
+import java.sql.*;
 import java.util.*;
 public class main  {
 	public static String e1;
@@ -106,7 +106,7 @@ public static void runSQL(String query) {			//method that helps output the resul
 	      ResultSetMetaData rsmd = rs.getMetaData();
 	  
 	  
-	      int numberOfColumns = rsmd.getColumnCount();	
+	      int numberOfColumns = rsmd.getColumnCount();
 	  
 	      for (int i = 1; i <= numberOfColumns; i++) {	//print statement for the queries 
 	        if (i > 1) System.out.print("  |  ");		//print statement that seperates columns in output 
@@ -118,7 +118,7 @@ public static void runSQL(String query) {			//method that helps output the resul
 	      while (rs.next()) {				//loops prints the different columns for a query 
 	        for (int i = 1; i <= numberOfColumns; i++) {
 	          if (i > 1) System.out.print("  |  ");
-	          String columnValue = rs.getString(i);		
+	          String columnValue = rs.getString(i);
 	          System.out.print(columnValue);
 	        }
 	        System.out.println("");  
